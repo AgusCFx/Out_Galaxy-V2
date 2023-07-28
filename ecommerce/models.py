@@ -11,12 +11,15 @@ class Nave(models.Model):
         ('Utilitario','Utilitario'),
         ('Mineria', 'Mineria'),
     )
-    tipo = models.CharField(max_length=20, choices=TIPO_CHOICES)
-    descripcion = models.TextField(max_length=200)
-    cant_asientos = models.IntegerField()
-    precio = models.IntegerField()
+    tipo = models.CharField(max_length=20, choices=TIPO_CHOICES, default='Familiar')
+    descripcion = models.TextField(max_length=200, default='')
+    cant_asientos = models.IntegerField(default=0)
+    precio = models.IntegerField(default=0)
     # Armas
     compatible_con_armas = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.marca} {self.modelo}"
 
     def encontrar_armas_compatibles(self):
         if self.compatible_con_armas:
@@ -33,5 +36,8 @@ class Arma(models.Model):
     modelo = models.CharField(max_length=20)
     tipo_municion = models.CharField(max_length=20)
     dpm = models.FloatField()
-    descripcion = models.TextField()
+    descripcion = models.TextField(default='')
     naves_compatibles = models.ManyToManyField('Nave', blank=True)
+
+    def __str__(self):
+        return f"{self.marca, self.modelo}"
